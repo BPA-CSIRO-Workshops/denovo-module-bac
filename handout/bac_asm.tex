@@ -7,7 +7,7 @@
 %    within the \setModuleAuthors{} and \setModuleContributions{} environments
 \setModuleTitle{Bacterial Assembly}
 \setModuleAuthors{%
-  Jane Bloggs \mailto{jane.bloggs@example.com} \\
+  Torsten Seeman \mailto{jane.bloggs@example.com} \\
   Joe Bloggs \mailto(joe.bloggs@example.com)
 }
 \setModuleContributions{%
@@ -37,10 +37,8 @@
 
 After completing this module the trainee should be able to:
 \begin{itemize}
-  \item Assess the overall quality of NGS sequence reads
-  \item Visualise the quality, and other associated matrices, of reads to decide
-        on filters and cutoffs for cleaning up data ready for downstream analysis
-  \item Clean up and pre-process the sequences data for further analysis
+  \item Perform a bacterial assembly using velvet 
+  \item Visualise the assembly graph using bandage
 \end{itemize}
 % END KLOs
 
@@ -97,17 +95,6 @@ Highly redundant coverage ($>$15X) of the genome can be used to correct sequenci
 errors in the reads before assembly and errors. Various k-mer based error
 correction methods exist but are beyond the scope of this tutorial.
 
-In order to use a single character to encode Phred qualities, ASCII characters
-are used (\url{http://shop.alterlinks.com/ascii-table/ascii-table-us.php}). All ASCII characters have a decimal
-number associated with them but the first 32 characters are non-printable (e.g.
-
-Because ASCII characters $<$ 33 are non-printable, using the Phred+33 encoding was
-not possible. Therefore, they simply moved the offset from 33 to 64 thus
-
-schema it is not always possible to identify what encoding is in use. For
-example, if the only characters seen in the quality string are (\texttt{@ABCDEFGHI}),
-then it is impossible to know if you have really good Phred+33 encoded qualities
-or really bad Phred+64 encoded qualities.
 
 \subsection{Tables}
 
@@ -140,20 +127,7 @@ No handout is complete without figures, screenshots or similar.
 \label{fig:bad_example_untrimmed_plot}
 \end{figure}
 
-\subsection{Maths Environment}
-
-I won't pretend to be an expert in \LaTeX but I do know that one of the strengths of \LaTeX is it's
-ability to allow mathematical formulas to be constructed and typeset very easily. Firstly, you have
-to tell \LaTeX what text is going to contain mathematical symbols.
-
-For inline display, simply surround the relevant text by dollar signs: \verb+$Q(A) =-10 log10(P(\simA))$+
-
-For more complex mathematical formulas which need to be displayed separately, use the
-\verb+\begin{displaymath} ... \end{displaymath}+ environment to wrap around your formulas.
-
-\begin{displaymath}
-Q(A) =-10 log10(P(\simA))
-\end{displaymath} 
+\subsection{Graph Visualisation using Bandage}
 
 
 \subsection{Questions and Answers}
@@ -185,8 +159,6 @@ automatically and bash line continuation characters (\textbackslash) inserted wh
 
 \begin{lstlisting}
 cd ~/QC
-fastx_clipper -h
-fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_example.fastq -o bad_example_clipped.fastq
 \end{lstlisting}
 \end{steps}
 
