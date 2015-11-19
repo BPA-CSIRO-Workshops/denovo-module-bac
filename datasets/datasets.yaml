@@ -1,0 +1,13 @@
+btp::modules:
+  bacterial:
+    dirs:
+      - 'bacterial'
+    data:
+      R1.fastq.gz: 
+        source: 'https://s3-ap-southeast-2.amazonaws.com/denovo-data-bacterial'
+        targets: 
+          - 'bacterial/R1.fastq.gz'
+      R2.fastq.gz: 
+        source: 'https://s3-ap-southeast-2.amazonaws.com/denovo-data-bacterial'
+        targets: 
+          - 'bacterial/R2.fastq.gz'
