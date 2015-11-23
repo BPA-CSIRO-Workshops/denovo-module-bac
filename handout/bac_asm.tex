@@ -28,7 +28,7 @@ After completing this module the trainee should be able to:
   \item Perform a simple genome assembly for a small organism using \texttt{Velvet}
   \item Visualise the assembly graph using \texttt{Bandage}
   \item Be aware of the effects and trade-offs of the parameter \texttt{K} on the genome assembly
-  \teim Understand that genome assembly produces a graph structure
+  \item Understand that genome assembly produces a graph structure
 \end{itemize}
 % END KLOs
 
@@ -169,7 +169,7 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 \begin{steps}
 
 Let's examine the \texttt{stats.txt} file and look at the \texttt{short1\_cov} column which is the k-mer coverage of each contig:
-\begin{lstlising}
+\begin{lstlisting}
 cut –f6 dir/stats.txt | less
 \end{lstlisting}
 \end{steps}
