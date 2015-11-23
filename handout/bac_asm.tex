@@ -16,25 +16,11 @@
   Sonika Tyagi \mailto{Sonika.Tyagi@agrf.org.au}
 }
 
-% BEGIN: Module Title Page
-% This simply uses the above information and creates a module chapter page
-% NOTES:
-%  * The chapter page will always appear on odd numbered page
 \chapter{\moduleTitle}
 \newpage
-% END: Module Title Page
 
 
 % BEGIN: KLOs
-% Key Learning Outcomes (KLOs) are an important aspect of any learning/training. They provide
-% valuable infomation about what the trainee will have learned, what they will be able to do or know
-% abouti at the end of the module. Unlike objectives which are more trainer oriented, KOLs are
-% focused on the learner.
-% At the end of the module, the KLOs can be used to develop criteria for writing an assessment to
-% see if the trainees knowledge/skills have improved as a result of the module.
-% 
-% Search online for information on how to write KLOs. e.g.
-% http://www.teaching-learning.utas.edu.au/__data/assets/word_doc/0014/23333/Learning-outcomes-v9.1.doc
 \section{Key Learning Outcomes}
 
 After completing this module the trainee should be able to:
@@ -61,12 +47,14 @@ After completing this module the trainee should be able to:
  % 	\url{http://picard.sourceforge.net/}
 \end{description}
 
-%\section{Useful Links}
+\section{Data Source and Useful Links}
  
-%\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
-%  \item[FASTQ Encoding]\hfill\\
-%    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
-%\end{description}
+\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
+  \item[Data used in this tutorial is from ENA accession SRR2054105]\hfill\\
+    \url{http://www.ebi.ac.uk/ena/data/view/SRR2054105}
+  \item[Spreadsheet used in the group activity]\hfill\\
+  \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing}
+\end{description}
 
 \newpage
 % END: Resources Used
@@ -91,11 +79,12 @@ an Illumina HiSeq 2000 instrument at the University of Oxford and publicly avail
 \begin{steps}
 Let's have a look at the datasets by doing:
 \begin{lstlisting}
- cd ~/ %path???
+ cd /home/trainee/bacterial
  ls
 \end{lstlisting}
- R1.fastq.gz
- R2.fastq.gz
+You should see the following two files:
+ \item R1.fastq.gz
+ \item R2.fastq.gz
 \end{steps}
 
 
