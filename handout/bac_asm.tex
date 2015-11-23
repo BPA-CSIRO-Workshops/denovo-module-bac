@@ -41,7 +41,7 @@ After completing this module the trainee should be able to:
 \begin{itemize}
   \item Perform a simple genome assembly for a small organism using \texttt{Velvet}
   \item Visualise the assembly graph using \texttt{Bandage}
-  \item Be aware of the effects and trade-offs of the parameter K on the genome assembly
+  \item Be aware of the effects and trade-offs of the parameter \texttt{K} on the genome assembly
   \teim Understand that genome assembly produces a graph structure
 \end{itemize}
 % END KLOs
@@ -179,7 +179,7 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 
 \begin{steps}
 
-Let's examine the \texttt{stats.txt} file and look at heh \texttt{short1_cov} column which is the k-mer coverage of each contig:
+Let's examine the \texttt{stats.txt} file and look at the \texttt{short1_cov} column which is the k-mer coverage of each contig:
 \begin{lstlising}
 cut –f6 dir/stats.txt | less
 \end{lstlisting}
@@ -214,11 +214,11 @@ Why is there N letters in the assembly?
 The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGraph}. The \texttt{Bandage} software allows us to view and explore the assembly graph.
 \begin{steps}
 \begin{enumerate}
-\item Start Bandage.
-\item Go to File -> Load Graph and load the LastGraph from your assembly in DIR. This may take a little while so be patient.
+\item Start \texttt{Bandage}.
+\item Go to \texttt{File} -> \texttt{Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
 \item Maximize your window to fill up the whole screen.
-\item Click Draw graph on the left hand panel.
-\item Change Random colours to Colour by read depth on the left hand panel.
+\item Click \texttt{Draw graph} on the left hand panel.
+\item Change \texttt{Random colours} to \texttt{Colour by read depth} on the left hand panel.
 \end{enumerate}
 \end{steps}
 
@@ -254,12 +254,22 @@ Feel free to play around a bit and ask questions.
 The graph is quite tangled. The long stretches correspond to contigs. The intersections correspond to shared k-mers in the graph, which occur due to repeated sequences within the genome.
 \begin{steps}
 \begin{enumerate}
-\item Select an node (rectangle) in the graph. It's length is reported in the right hand panel as Length: NNN.
-\item On the menu choose Output -> Web BLAST selected node. Your browser should open the
+\item Select an node (rectangle) in the graph. It's length is reported in the right hand panel as \texttt{Length: NNN}.
+\item On the menu choose \texttt{Output -> Web BLAST selected node}. Your browser should open the
    NCBI BLAST Website \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome}.
-\item Click the BLAST button at the bottom, and wait for the result.
+\item Click the \texttt{BLAST} button at the bottom, and wait for the result.
 \end{steps}
 
+\begin{questions}
+Did your node match anything in the Genbank database?
+\begin{answer}
+%Answer
+\end{answer}
+Can you determine what species of bacteria was sequenced?
+\begin{answer}
+%Answer
+\end{answer}
+\end{questions}
 
 \section{Conclusion}
 You should now:
