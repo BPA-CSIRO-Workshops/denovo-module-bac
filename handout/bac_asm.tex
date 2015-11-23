@@ -143,9 +143,36 @@ The \texttt{Velvet} software performs the assembly in two steps. The first \text
 Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
 \begin{lstlisting}
 velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz % need to specify DIR
-/usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
 \end{lstlisting}
 \end{steps}
+
+Description of the arguments used in the command:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[DIR] = Directory name you chose to write the output to
+  \item[K] = K-mer value; it is an odd number
+  \item[-shortPaired] = The read types are short and paired end
+  \item[-fastq.gz] = The format of the input files
+  \item[-separate] = R1 and R2 reads are in separate files
+  \item[input file names] = input fastq file names
+\end{description}
+
+
+\begin{steps}
+Run the velvetg step now:
+\begin{lstlisting}
+/usr/bin/time -f "\%e" velvetg DIR -exp_cov auto -cov_cutoff auto
+\end{lstlisting}
+\end{steps}
+
+Description of the arguments used in the command:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[time] = to capture the \texttt{velvetg} command run time
+  \item[DIR] = Directory name you chose to write the velveth output to
+  \item[-exp_cov] = expected coverage is set to \texttt{auto}. To be determined by \texttt{velvet}
+  \item[-cov_cutoff] = coverage cutoff is set to \texttt{auto}. To be determined by \texttt{velvet}
+\end{description}
+
+
 
 Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the values for the following assembly statistics and add them to the spreadsheet \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} from earlier:
 \begin{table}[H]
