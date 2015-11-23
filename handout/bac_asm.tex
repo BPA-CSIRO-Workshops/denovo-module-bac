@@ -1,10 +1,3 @@
-% Define the module top matter
-% This gets used to create the chapter title page
-% NOTES:
-%  * When multiple people have authored or contributed to the module, simply use a LaTeX line break
-%    (a double-backslash: \\) at the end of each person.
-%  * If you don't want this information shown on the module chapter page, simply remove the lines
-%    within the \setModuleAuthors{} and \setModuleContributions{} environments
 \setModuleTitle{Bacterial Assembly} %Your first genome assembly
 \setModuleAuthors{%
   Torsten Seeman \mailto{tseemann@unimelb.edu.au} \\
@@ -74,7 +67,7 @@ aid our understand where, how and why assemblies are incomplete.
 \section{Before the assembly}
 \subsection{Sequence data}
 We have sequenced the genome of an bacterium using paired-end chemistry on 
-an Illumina HiSeq 2000 instrument at the University of Oxford and publicly available as SRR2054105\url{http://www.ebi.ac.uk/ena/data/view/SRR2054105}.
+an Illumina HiSeq 2000 instrument at the University of Oxford and publicly available as SRR2054105.
 
 \begin{steps}
 Let's have a look at the datasets by doing:
@@ -131,9 +124,9 @@ How are are quality values in \texttt{FASTQ} files calculated? Can we trust them
 
 \subsection{Allocate yourself to a \texttt{K} value on the spreadsheet}
 
-An important parameter to most genome assemblers is \texttt{K} which is the k-mer size used to construct the \textit{de Bruijn} graph (pronounced \textit{de Brown}) .
+An important parameter to most genome assemblers is \texttt{K} which is the k-mer size used to construct the \textit{de Bruijn} graph (pronounced \textit{de Brown}).
 
-Please go to this shared online spreadsheet\url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} and choose \textbf{a K value} and put your name next to it.
+Please go to this shared online spreadsheet (\url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing}) and choose \textbf{a K value} and put your name next to it.
 
 
 \section{Assemble the reads using Velvet}
@@ -142,10 +135,37 @@ The \texttt{Velvet} software performs the assembly in two steps. The first \text
 \begin{steps}
 Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
 \begin{lstlisting}
-velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz % need to specify DIR
-/usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
+velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to specify DIR
 \end{lstlisting}
 \end{steps}
+
+
+Description of the arguments used in the command:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[DIR] = Directory name you chose to write the output to 
+  \item[K] = K-mer value; it is an odd number 
+  \item[-shortPaired] = The read types are short and paired end
+  \item[-fastq.gz] = The format of the input files
+  \item[-separate] = R1 and R2 reads are in separate files
+  \item[input file names] = input fastq file names 
+\end{description}
+
+
+\begin{steps}
+Run the velvetg step now:
+\begin{lstlisting}
+/usr/bin/time -f "\%e" velvetg DIR -exp_cov auto -cov_cutoff auto
+\end{lstlisting}
+\end{steps}
+
+Description of the arguments used in the command:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[time] = to capture the \texttt{velvetg} command run time
+  \item[DIR] = Directory name you chose to write the velveth output to 
+  \item[-exp_cov] = expected coverage is set to \texttt{auto}. To be determined by \texttt{velvet} 
+  \item[-cov_cutoff] = coverage cutoff is set to \texttt{auto}. To be determined by \texttt{velvet} 
+\end{description}
+
 
 Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the values for the following assembly statistics and add them to the spreadsheet \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} from earlier:
 \begin{table}[H]
@@ -170,7 +190,7 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 
 Let's examine the \texttt{stats.txt} file and look at heh \texttt{short1_cov} column which is the k-mer coverage of each contig:
 \begin{lstlising}
-cut –f6 dir/stats.txt | less
+cut -f6 dir/stats.txt | less
 \end{lstlisting}
 \end{steps}
 
@@ -204,7 +224,7 @@ The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGrap
 \begin{steps}
 \begin{enumerate}
 \item Start Bandage.
-\item Go to File -> Load Graph and load the LastGraph from your assembly in DIR. This may take a little while so be patient.
+\item Go to File -$>$ Load Graph and load the LastGraph from your assembly in DIR. This may take a little while so be patient.
 \item Maximize your window to fill up the whole screen.
 \item Click Draw graph on the left hand panel.
 \item Change Random colours to Colour by read depth on the left hand panel.
