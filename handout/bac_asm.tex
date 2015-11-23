@@ -16,11 +16,25 @@
   Sonika Tyagi \mailto{Sonika.Tyagi@agrf.org.au}
 }
 
+% BEGIN: Module Title Page
+% This simply uses the above information and creates a module chapter page
+% NOTES:
+%  * The chapter page will always appear on odd numbered page
 \chapter{\moduleTitle}
 \newpage
+% END: Module Title Page
 
 
 % BEGIN: KLOs
+% Key Learning Outcomes (KLOs) are an important aspect of any learning/training. They provide
+% valuable infomation about what the trainee will have learned, what they will be able to do or know
+% abouti at the end of the module. Unlike objectives which are more trainer oriented, KOLs are
+% focused on the learner.
+% At the end of the module, the KLOs can be used to develop criteria for writing an assessment to
+% see if the trainees knowledge/skills have improved as a result of the module.
+% 
+% Search online for information on how to write KLOs. e.g.
+% http://www.teaching-learning.utas.edu.au/__data/assets/word_doc/0014/23333/Learning-outcomes-v9.1.doc
 \section{Key Learning Outcomes}
 
 After completing this module the trainee should be able to:
@@ -47,14 +61,12 @@ After completing this module the trainee should be able to:
  % 	\url{http://picard.sourceforge.net/}
 \end{description}
 
-\section{Data Source and Useful Links}
+%\section{Useful Links}
  
-\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
-  \item[Data used in this tutorial is from ENA accession SRR2054105]\hfill\\
-    \url{http://www.ebi.ac.uk/ena/data/view/SRR2054105}
-  \item[Spreadsheet used in the group activity]\hfill\\
-  \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing}
-\end{description}
+%\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
+%  \item[FASTQ Encoding]\hfill\\
+%    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
+%\end{description}
 
 \newpage
 % END: Resources Used
@@ -79,12 +91,11 @@ an Illumina HiSeq 2000 instrument at the University of Oxford and publicly avail
 \begin{steps}
 Let's have a look at the datasets by doing:
 \begin{lstlisting}
- cd /home/trainee/bacterial
+ cd ~/ %path???
  ls
 \end{lstlisting}
-You should see the following two files:
- \item R1.fastq.gz
- \item R2.fastq.gz
+ R1.fastq.gz
+ R2.fastq.gz
 \end{steps}
 
 
@@ -141,8 +152,9 @@ The \texttt{Velvet} software performs the assembly in two steps. The first \text
 
 \begin{steps}
 Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
+% need to specify DIR
 \begin{lstlisting}
-velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz % need to specify DIR
+velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz 
 /usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
 \end{lstlisting}
 \end{steps}
@@ -204,7 +216,7 @@ The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGrap
 \begin{steps}
 \begin{enumerate}
 \item Start \texttt{Bandage}.
-\item Go to \texttt{File} -> \texttt{Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
+\item Go to \texttt{File - > Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
 \item Maximize your window to fill up the whole screen.
 \item Click \texttt{Draw graph} on the left hand panel.
 \item Change \texttt{Random colours} to \texttt{Colour by read depth} on the left hand panel.
@@ -213,15 +225,15 @@ The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGrap
 
 Now get up out of your chair and walks around and look at all the different graphs the other participants obtained with different values of \texttt{K}.
 \begin{questions}
-How does \texttt{K} affect the graph?
+How does \texttt{K} affect the graph? \\
 \begin{answer}
 % Needs answer
 \end{answer}
-What would the graph look like in an ideal situtation?
+What would the graph look like in an ideal situtation? \\
 \begin{answer}
 % Needs answer
 \end{answer}
-Why didn't anyone achieve perfection?
+Why didn't anyone achieve perfection? \\
 \begin{answer}
 % Needs answer
 \end{answer}
@@ -250,11 +262,11 @@ The graph is quite tangled. The long stretches correspond to contigs. The inters
 \end{steps}
 
 \begin{questions}
-Did your node match anything in the Genbank database?
+Did your node match anything in the Genbank database? \\
 \begin{answer}
 %Answer
 \end{answer}
-Can you determine what species of bacteria was sequenced?
+Can you determine what species of bacteria was sequenced? \\
 \begin{answer}
 %Answer
 \end{answer}
