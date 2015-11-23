@@ -5,13 +5,15 @@
 %    (a double-backslash: \\) at the end of each person.
 %  * If you don't want this information shown on the module chapter page, simply remove the lines
 %    within the \setModuleAuthors{} and \setModuleContributions{} environments
-\setModuleTitle{Bacterial Assembly}
+\setModuleTitle{Bacterial Assembly} %Your first genome assembly
 \setModuleAuthors{%
-  Torsten Seeman \mailto{jane.bloggs@example.com} \\
-  Joe Bloggs \mailto(joe.bloggs@example.com)
+  Torsten Seeman \mailto{tseemann@unimelb.edu.au} \\
+  Paul Berkman \mailto{Paul.Berkman@csiro.au} \\
+  Philippe Moncuquet \mailto{Philippe.Moncuquet@csiro.au} \\
 }
 \setModuleContributions{%
-  John Doe \mailto{john.dow@example.com}%
+  Zhiliang Chen \mailto{zhiliang.chen@unsw.edu.au} \\%
+  Sonika Tyagi \mailto{Sonika.Tyagi@agrf.org.au}
 }
 
 % BEGIN: Module Title Page
@@ -37,8 +39,10 @@
 
 After completing this module the trainee should be able to:
 \begin{itemize}
-  \item Perform a bacterial assembly using velvet 
-  \item Visualise the assembly graph using bandage
+  \item Perform a simple genome assembly for a small organism using \texttt{Velvet}
+  \item Visualise the assembly graph using \texttt{Bandage}
+  \item Be aware of the effects and trade-offs of the parameter K on the genome assembly
+  \teim Understand that genome assembly produces a graph structure
 \end{itemize}
 % END KLOs
 
@@ -49,20 +53,20 @@ After completing this module the trainee should be able to:
  
 \subsection{Tools Used}
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
-  \item[FastQC]\hfill\\
-  	\url{http://www.bioinformatics.babraham.ac.uk/projects/fastqc/}
-  \item[FASTX-Toolkit]\hfill\\
-  	\url{http://hannonlab.cshl.edu/fastx_toolkit/}
-  \item[Picard]\hfill\\
-  	\url{http://picard.sourceforge.net/}
+  \item[Velvet]\hfill\\
+  	\url{https://www.ebi.ac.uk/~zerbino/velvet/}
+  \item[Bandage]\hfill\\
+  	\url{https://rrwick.github.io/Bandage/}
+ % \item[Picard]\hfill\\
+ % 	\url{http://picard.sourceforge.net/}
 \end{description}
 
-\section{Useful Links}
+%\section{Useful Links}
  
-\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
-  \item[FASTQ Encoding]\hfill\\
-    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
-\end{description}
+%\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
+%  \item[FASTQ Encoding]\hfill\\
+%    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
+%\end{description}
 
 \newpage
 % END: Resources Used
@@ -72,93 +76,197 @@ After completing this module the trainee should be able to:
 
 % To make a paragraph appear as a "note" to the reader, simply wrap it in a "note" environment like
 % this:
-\begin{note}
-This is an important note to the reader. The paragraph get's it own margin icon and formatting to
-ensure it stands out.
-\end{note}
+%\begin{note}
+In this tutorial we will take raw sequencing reads and \textit{de novo} assemble them
+into contigs. We will also explore the internal assembly graph structure to
+aid our understand where, how and why assemblies are incomplete.
 
-There are 10 characters which have special meaning in \LaTeX and to have them displayed as literal
-characters we need to do something special. The first seven can simply be prepended by a backslash;
-for the other three, we must use the macros \verb+\textasciitilde+, \verb+\textasciicircum+,
-\verb+\textbackslash+.
+%\end{note}
 
+\section{Before the assembly}
+\subsection{Sequence data}
+We have sequenced the genome of an bacterium using paired-end chemistry on 
+an Illumina HiSeq 2000 instrument at the University of Oxford and publicly available as SRR2054105\url{http://www.ebi.ac.uk/ena/data/view/SRR2054105}.
 
-\& \% \$ \# \_ \{ \}
+\begin{steps}
+Let's have a look at the datasets by doing:
+\begin{lstlisting}
+ cd ~/ %path???
+ ls
+\end{lstlisting}
+ R1.fastq.gz
+ R2.fastq.gz
+\end{steps}
 
-\textasciitilde
-
-\textasciicircum
-
-\textbackslash
-
-Highly redundant coverage ($>$15X) of the genome can be used to correct sequencing
-errors in the reads before assembly and errors. Various k-mer based error
-correction methods exist but are beyond the scope of this tutorial.
-
-
-\subsection{Tables}
-
-Writing tables in \LaTeX is HARD! Rather than write them from scratch, I'd head over to
-\url{http://www.tablesgenerator.com/latex_tables}, generate the table you want using the interactive
-page and copy the resulting \LaTeX into your source file.
-
-\begin{tabular}{llr}
-\hline
-\multicolumn{2}{c}{Item} \\
-\cline{1-2}
-Animal    & Description & Price (\$) \\
-\hline
-Gnat      & per gram    & 13.65      \\
-          & each        & 0.01       \\
-Gnu       & stuffed     & 92.50      \\
-Emu       & stuffed     & 33.33      \\
-Armadillo & frozen      & 8.99       \\
-\hline
-\end{tabular}
-
-\subsection{Figures}
-
-No handout is complete without figures, screenshots or similar.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{handout/bad_example.png}
-\caption{Per base sequence quality plot for \texttt{bad\_example.fastq}.}
-\label{fig:bad_example_untrimmed_plot}
-\end{figure}
-
-\subsection{Graph Visualisation using Bandage}
-
-
-\subsection{Questions and Answers}
-
-It is useful to maintain the answers to questions together in the same \LaTeX source. By using the
-\verb+\begin{answer} ... \end{answer}+ environment we can have the enclosed answers excluded from
-the trainee's version of the handout while including it in the trainer's version of the handout.
 
 \begin{questions}
-We can ask a simply question to test if the trainee is understanding what they are doing. 
+How many reads are in this data set?
 \begin{answer}
-We can maintain the answer along side the questions.
+% Needs answer
+\end{answer}
+What is the yield in basepairs?
+\begin{answer}
+% Needs answer
+\end{answer}
+Assuming an average bacterial genome size of 4 Mbp, what depth of coverage do we have?
+\begin{answer}
+% Needs answer
 \end{answer}
 
 \end{questions}
 
-\subsection{Code For Trainees to Copy/Type}
 
-Different people have different opinions on whether it is a good idea to provide the commands for
-trainees to copy-and-paste. In our experience, there is a huge amount of time wasted by novices
-typing commands incorrectly or changing filenames which affects commands you might run later on. We
-also think that it's a good idea to pose regular questions or ask the trainees to modify a previous
-command. This way you can catch out those whoe are just trying to get ahead by blindly
-copying-and-pasting.
 
-To provide a nicely formatted, copy-and-pastable command, simply wrap it in the
-\verb+\begin{lstlisting} ... \end{lstlisting}+ environment. Long commands will be wrapped
-automatically and bash line continuation characters (\textbackslash) inserted where required.
+\subsection{Trim or clip reads}
 
+There are two distinct reasons one may wish to trim or clip the raw reads.
+\begin{enumerate}
+\item Low quality bases typically occur toward the end of Illumina reads. The lower the quality score, the higher the chance that the base is incorrect. 
+This introduces false k-mers into the assembly process. A good assembler should handle these gracefully.
+\item Seqeuncing adaptors are artificial sequence that can occur at the end of reads that came from fragments of DNA that were shorter than desired. 
+They were not in the original genome and their presence in lots of reads will totally confuse the assembler.
+\end{enumerate}
+
+Normally one would use \texttt{fastqc} or similar to determine whether quality trimming is warranted and for the presence of sequencing adaptors. 
+The data set in this exercise is 99\% free of adaptors and is good quality overall so we will skip those steps.
+\begin{questions}
+How do you know which adaptor sequence to trim?
+\begin{answer}
+% Needs answer
+\end{answer}
+How are are quality values in \texttt{FASTQ} files calculated? Can we trust them?
+\begin{answer}
+% Needs answer
+\end{answer}
+\end{questions}
+
+\subsection{Allocate yourself to a \texttt{K} value on the spreadsheet}
+
+An important parameter to most genome assemblers is \texttt{K} which is the k-mer size used to construct the \textit{de Bruijn} graph (pronounced \textit{de Brown}) .
+
+Please go to this shared online spreadsheet\url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} and choose \textbf{a K value} and put your name next to it.
+
+
+\section{Assemble the reads using Velvet}
+The \texttt{Velvet} software performs the assembly in two steps. The first \texttt{velveth} step hashes the reads. The second \texttt{velvetg} step builds, cleans and traverses the graph.
+
+\begin{steps}
+Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
 \begin{lstlisting}
-cd ~/QC
+velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz % need to specify DIR
+/usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
 \end{lstlisting}
 \end{steps}
 
+Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the values for the following assembly statistics and add them to the spreadsheet \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} from earlier:
+\begin{table}[H]
+  \centering
+  \caption{Output files}
+    \begin{tabular}{ll}
+    \toprule
+    \textbf{Filename} & \textbf{Description} \\
+    \midrule
+    \texttt{contigs.fa} & this is a FASTA file with your contigs \\
+    \texttt{Log} & has most of the metrics in it that we recorded \\
+	\texttt{stats.txt} & TSV file of length and coverage of individual contigs \\ 
+	\texttt{Sequences} & A copy of the input FASTQ sequences in FASTA format \\ 
+	\texttt{Pregraph Roadmaps Graph2} & Interim assembly graph structure \\ 
+	\texttt{LastGraph} & Final graph structure
+    \bottomrule
+    \end{tabular}
+  \label{tab:velvet_out}
+\end{table}
+
+\begin{steps}
+
+Let's examine the \texttt{stats.txt} file and look at heh \texttt{short1_cov} column which is the k-mer coverage of each contig:
+\begin{lstlising}
+cut –f6 dir/stats.txt | less
+\end{lstlisting}
+\end{steps}
+
+\begin{questions}
+What do you notice about the k-mer coverages?
+\begin{answer}
+% Needs answer
+\end{answer}
+What do the outliers correspond to?
+\begin{answer}
+% Needs answer
+\end{answer}
+\end{questions}
+
+\begin{steps}
+\begin{lstlisting}
+grep NN dir/contigs.fa
+\end{lstlisting}
+\end{steps}
+
+\begin{questions}
+Why is there N letters in the assembly?
+\begin{answer}
+% Needs answer
+\end{answer}
+\end{questions}
+
+\section{Visualising the assembly graph using Bandage}
+
+The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGraph}. The \texttt{Bandage} software allows us to view and explore the assembly graph.
+\begin{steps}
+\begin{enumerate}
+\item Start Bandage.
+\item Go to File -> Load Graph and load the LastGraph from your assembly in DIR. This may take a little while so be patient.
+\item Maximize your window to fill up the whole screen.
+\item Click Draw graph on the left hand panel.
+\item Change Random colours to Colour by read depth on the left hand panel.
+\end{enumerate}
+\end{steps}
+
+Now get up out of your chair and walks around and look at all the different graphs the other participants obtained with different values of \texttt{K}.
+\begin{questions}
+How does \texttt{K} affect the graph?
+\begin{answer}
+% Needs answer
+\end{answer}
+What would the graph look like in an ideal situtation?
+\begin{answer}
+% Needs answer
+\end{answer}
+Why didn't anyone achieve perfection?
+\begin{answer}
+% Needs answer
+\end{answer}
+\end{questions}
+
+Here is another example \url{https://github.com/rrwick/Bandage/wiki/Effect-of-kmer-size} from the Bandage web site. % MORE DETAIL???
+
+\subsection{Explore the graph}
+
+\texttt{Bandage} is designed to be an interactive tool. It allows you to see relationships between parts of your genome that are lost when you only look at the FASTA file of contigs.
+\begin{itemize}
+\item Zoom in using the \texttt{Zoom} up/down button in the left hand panel
+\item Pan around by holding down the Option/Windows key and dragging on the background
+\item Move nodes out of the way by selecting and dragging
+\end{itemize}
+Feel free to play around a bit and ask questions.
+
+\subsection{Features of the assembly graph}
+The graph is quite tangled. The long stretches correspond to contigs. The intersections correspond to shared k-mers in the graph, which occur due to repeated sequences within the genome.
+\begin{steps}
+\begin{enumerate}
+\item Select an node (rectangle) in the graph. It's length is reported in the right hand panel as Length: NNN.
+\item On the menu choose Output -> Web BLAST selected node. Your browser should open the
+   NCBI BLAST Website \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome}.
+\item Click the BLAST button at the bottom, and wait for the result.
+\end{steps}
+
+
+\section{Conclusion}
+You should now:
+\begin{itemize}
+\item know how to use Velvet to assemble a simpel genome from Illumina sequences
+\item understand the role of the k-mer length K in the assembly process
+\item be able to relate the graph structure to the final contigs
+\item realize the limitations of short read sequences with respect to genome complexity
+\end{itemize}
+Thank you.
