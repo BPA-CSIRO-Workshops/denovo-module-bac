@@ -42,7 +42,7 @@ After completing this module the trainee should be able to:
   \item Perform a simple genome assembly for a small organism using \texttt{Velvet}
   \item Visualise the assembly graph using \texttt{Bandage}
   \item Be aware of the effects and trade-offs of the parameter \texttt{K} on the genome assembly
-  \teim Understand that genome assembly produces a graph structure
+  \item Understand that genome assembly produces a graph structure
 \end{itemize}
 % END KLOs
 
@@ -100,15 +100,15 @@ Let's have a look at the datasets by doing:
 
 
 \begin{questions}
-How many reads are in this data set?
+How many reads are in this data set? \\
 \begin{answer}
 % Needs answer
 \end{answer}
-What is the yield in basepairs?
+What is the yield in basepairs? \\
 \begin{answer}
 % Needs answer
 \end{answer}
-Assuming an average bacterial genome size of 4 Mbp, what depth of coverage do we have?
+Assuming an average bacterial genome size of 4 Mbp, what depth of coverage do we have? \\
 \begin{answer}
 % Needs answer
 \end{answer}
@@ -130,11 +130,11 @@ They were not in the original genome and their presence in lots of reads will to
 Normally one would use \texttt{fastqc} or similar to determine whether quality trimming is warranted and for the presence of sequencing adaptors. 
 The data set in this exercise is 99\% free of adaptors and is good quality overall so we will skip those steps.
 \begin{questions}
-How do you know which adaptor sequence to trim?
+How do you know which adaptor sequence to trim? \\
 \begin{answer}
 % Needs answer
 \end{answer}
-How are are quality values in \texttt{FASTQ} files calculated? Can we trust them?
+How are are quality values in \texttt{FASTQ} files calculated? Can we trust them? \\
 \begin{answer}
 % Needs answer
 \end{answer}
@@ -154,10 +154,42 @@ The \texttt{Velvet} software performs the assembly in two steps. The first \text
 Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
 % need to specify DIR
 \begin{lstlisting}
+<<<<<<< HEAD
 velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz 
 /usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
+=======
+velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to specify DIR
+>>>>>>> 90fb5168693bc9016b8bde037be8ab5d85eb3ff4
 \end{lstlisting}
 \end{steps}
+
+Description of the arguments used in the command:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[DIR] = Directory name you chose to write the output to
+  \item[K] = K-mer value; it is an odd number
+  \item[-shortPaired] = The read types are short and paired end
+  \item[-fastq.gz] = The format of the input files
+  \item[-separate] = R1 and R2 reads are in separate files
+  \item[input file names] = input fastq file names
+\end{description}
+
+
+\begin{steps}
+Run the velvetg step now:
+\begin{lstlisting}
+/usr/bin/time -f "\%e" velvetg DIR -exp_cov auto -cov_cutoff auto
+\end{lstlisting}
+\end{steps}
+
+Description of the arguments used in the command:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[time] = to capture the \texttt{velvetg} command run time
+  \item[DIR] = Directory name you chose to write the velveth output to
+  \item[-exp\_cov] = expected coverage is set to \texttt{auto}. To be determined by \texttt{velvet}
+  \item[-cov\_cutoff] = coverage cutoff is set to \texttt{auto}. To be determined by \texttt{velvet}
+\end{description}
+
+
 
 Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the values for the following assembly statistics and add them to the spreadsheet \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} from earlier:
 \begin{table}[H]
@@ -172,7 +204,7 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 	\texttt{stats.txt} & TSV file of length and coverage of individual contigs \\ 
 	\texttt{Sequences} & A copy of the input FASTQ sequences in FASTA format \\ 
 	\texttt{Pregraph Roadmaps Graph2} & Interim assembly graph structure \\ 
-	\texttt{LastGraph} & Final graph structure
+	\texttt{LastGraph} & Final graph structure \\
     \bottomrule
     \end{tabular}
   \label{tab:velvet_out}
@@ -180,18 +212,18 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 
 \begin{steps}
 
-Let's examine the \texttt{stats.txt} file and look at the \texttt{short1_cov} column which is the k-mer coverage of each contig:
-\begin{lstlising}
-cut –f6 dir/stats.txt | less
+Let's examine the \texttt{stats.txt} file and look at the \texttt{short1\_cov} column which is the k-mer coverage of each contig:
+\begin{lstlisting}
+cut -f6 dir/stats.txt | less
 \end{lstlisting}
 \end{steps}
 
 \begin{questions}
-What do you notice about the k-mer coverages?
+What do you notice about the k-mer coverages? \\
 \begin{answer}
 % Needs answer
 \end{answer}
-What do the outliers correspond to?
+What do the outliers correspond to? \\
 \begin{answer}
 % Needs answer
 \end{answer}
@@ -204,7 +236,7 @@ grep NN dir/contigs.fa
 \end{steps}
 
 \begin{questions}
-Why is there N letters in the assembly?
+Why is there N letters in the assembly? \\
 \begin{answer}
 % Needs answer
 \end{answer}
@@ -216,7 +248,11 @@ The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGrap
 \begin{steps}
 \begin{enumerate}
 \item Start \texttt{Bandage}.
+<<<<<<< HEAD
 \item Go to \texttt{File - > Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
+=======
+\item Go to \texttt{File -> Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
+>>>>>>> 90fb5168693bc9016b8bde037be8ab5d85eb3ff4
 \item Maximize your window to fill up the whole screen.
 \item Click \texttt{Draw graph} on the left hand panel.
 \item Change \texttt{Random colours} to \texttt{Colour by read depth} on the left hand panel.
@@ -254,7 +290,6 @@ Feel free to play around a bit and ask questions.
 \subsection{Features of the assembly graph}
 The graph is quite tangled. The long stretches correspond to contigs. The intersections correspond to shared k-mers in the graph, which occur due to repeated sequences within the genome.
 \begin{steps}
-\begin{enumerate}
 \item Select an node (rectangle) in the graph. It's length is reported in the right hand panel as \texttt{Length: NNN}.
 \item On the menu choose \texttt{Output -> Web BLAST selected node}. Your browser should open the
    NCBI BLAST Website \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome}.
