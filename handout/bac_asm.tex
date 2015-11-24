@@ -61,12 +61,14 @@ After completing this module the trainee should be able to:
  % 	\url{http://picard.sourceforge.net/}
 \end{description}
 
-%\section{Useful Links}
+\section{Data Source and Useful Links}
 
-%\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
-%  \item[FASTQ Encoding]\hfill\\
-%    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
-%\end{description}
+\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
+  \item[Data used in this tutorial is from ENA accession SRR2054105]\hfill\\
+    \url{http://www.ebi.ac.uk/ena/data/view/SRR2054105}
+  \item[Spreadsheet used in the group activity]\hfill\\
+  \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing}
+\end{description}
 
 \newpage
 % END: Resources Used
@@ -90,15 +92,15 @@ an Illumina HiSeq 2000 instrument at the University of Oxford
 and publicly available as SRR2054105 the Europen Nucleotide Archive (ENA).
 
 \begin{steps}
-Let's have a look at the dataset by doing:
+Let's have a look at the datasets by doing:
 \begin{lstlisting}
- cd ~/bacterial
+ cd /home/trainee/bacterial
  ls
 \end{lstlisting}
- \texttt{R1.fastq.gz}
- \texttt{R2.fastq.gz}
+You should see the following two files:
+ \item R1.fastq.gz
+ \item R2.fastq.gz
 \end{steps}
-
 
 \begin{questions}
 How many reads are in this data set? \\
@@ -114,8 +116,6 @@ Assuming an average bacterial genome size of 4 Mbp, what depth of coverage do we
 210 / 4 = 53x
 \end{answer}
 \end{questions}
-
-
 
 \subsection{Trim or clip reads}
 
@@ -162,13 +162,9 @@ The \texttt{Velvet} software performs the assembly in two steps. The first \text
 step hashes the reads. The second \texttt{velvetg} step builds, cleans and traverses the graph.
 
 \begin{steps}
-Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated
-on the spreadsheet and assemble the reads.
-% need to specify DIR
+Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
 \begin{lstlisting}
-velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to specify DIR
-
-/usr/bin/time -f "\%e" velvetg DIR -exp_cov auto -cov_cutoff auto
+velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz
 \end{lstlisting}
 \end{steps}
 
@@ -181,7 +177,6 @@ Description of the arguments used in the command:
   \item[-separate] = R1 and R2 reads are in separate files
   \item[input file names] = input FASTQ file names
 \end{description}
-
 
 \begin{steps}
 Run the velvetg step now:
