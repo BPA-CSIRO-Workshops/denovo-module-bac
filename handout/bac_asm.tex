@@ -142,7 +142,7 @@ The \texttt{Velvet} software performs the assembly in two steps. The first \text
 \begin{steps}
 Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
 \begin{lstlisting}
-velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz % need to specify DIR
+velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to specify DIR
 \end{lstlisting}
 \end{steps}
 
@@ -197,7 +197,7 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 
 Let's examine the \texttt{stats.txt} file and look at the \texttt{short1\_cov} column which is the k-mer coverage of each contig:
 \begin{lstlisting}
-cut –f6 dir/stats.txt | less
+cut -f6 dir/stats.txt | less
 \end{lstlisting}
 \end{steps}
 
@@ -231,7 +231,7 @@ The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGrap
 \begin{steps}
 \begin{enumerate}
 \item Start \texttt{Bandage}.
-\item Go to \texttt{File} -> \texttt{Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
+\item Go to \texttt{File -> Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
 \item Maximize your window to fill up the whole screen.
 \item Click \texttt{Draw graph} on the left hand panel.
 \item Change \texttt{Random colours} to \texttt{Colour by read depth} on the left hand panel.
