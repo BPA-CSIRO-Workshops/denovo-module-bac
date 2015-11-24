@@ -7,7 +7,7 @@
 %    within the \setModuleAuthors{} and \setModuleContributions{} environments
 \setModuleTitle{Bacterial Assembly} %Your first genome assembly
 \setModuleAuthors{%
-  Torsten Seeman \mailto{tseemann@unimelb.edu.au} \\
+  Torsten Seemann \mailto{tseemann@unimelb.edu.au} \\
   Paul Berkman \mailto{Paul.Berkman@csiro.au} \\
   Philippe Moncuquet \mailto{Philippe.Moncuquet@csiro.au} \\
 }
@@ -27,12 +27,12 @@
 
 % BEGIN: KLOs
 % Key Learning Outcomes (KLOs) are an important aspect of any learning/training. They provide
-% valuable infomation about what the trainee will have learned, what they will be able to do or know
-% abouti at the end of the module. Unlike objectives which are more trainer oriented, KOLs are
+% valuable information about what the trainee will have learned, what they will be able to do or know
+% about at the end of the module. Unlike objectives which are more trainer oriented, KOLs are
 % focused on the learner.
 % At the end of the module, the KLOs can be used to develop criteria for writing an assessment to
 % see if the trainees knowledge/skills have improved as a result of the module.
-% 
+%
 % Search online for information on how to write KLOs. e.g.
 % http://www.teaching-learning.utas.edu.au/__data/assets/word_doc/0014/23333/Learning-outcomes-v9.1.doc
 \section{Key Learning Outcomes}
@@ -50,7 +50,7 @@ After completing this module the trainee should be able to:
 % This section can be used to describe the tools and data used during the module. It helps to act as
 % a future reference to the trainee
 \section{Resources You'll be Using}
- 
+
 \subsection{Tools Used}
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
   \item[Velvet]\hfill\\
@@ -62,7 +62,7 @@ After completing this module the trainee should be able to:
 \end{description}
 
 %\section{Useful Links}
- 
+
 %\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
 %  \item[FASTQ Encoding]\hfill\\
 %    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
@@ -79,40 +79,40 @@ After completing this module the trainee should be able to:
 %\begin{note}
 In this tutorial we will take raw sequencing reads and \textit{de novo} assemble them
 into contigs. We will also explore the internal assembly graph structure to
-aid our understand where, how and why assemblies are incomplete.
+aid our understanding of why assemblies are incomplete.
 
 %\end{note}
 
 \section{Before the assembly}
 \subsection{Sequence data}
-We have sequenced the genome of an bacterium using paired-end chemistry on 
-an Illumina HiSeq 2000 instrument at the University of Oxford and publicly available as SRR2054105\url{http://www.ebi.ac.uk/ena/data/view/SRR2054105}.
+We have sequenced the genome of a bacterium using paired-end chemistry on
+an Illumina HiSeq 2000 instrument at the University of Oxford
+and publicly available as SRR2054105 the Europen Nucleotide Archive (ENA).
 
 \begin{steps}
-Let's have a look at the datasets by doing:
+Let's have a look at the dataset by doing:
 \begin{lstlisting}
- cd ~/ %path???
+ cd ~/bacterial
  ls
 \end{lstlisting}
- R1.fastq.gz
- R2.fastq.gz
+ \texttt{R1.fastq.gz}
+ \texttt{R2.fastq.gz}
 \end{steps}
 
 
 \begin{questions}
 How many reads are in this data set? \\
 \begin{answer}
-% Needs answer
+2100778 pairs
 \end{answer}
 What is the yield in basepairs? \\
 \begin{answer}
-% Needs answer
+210077800 bp = 210 Mbp
 \end{answer}
 Assuming an average bacterial genome size of 4 Mbp, what depth of coverage do we have? \\
 \begin{answer}
-% Needs answer
+210 / 4 = 53x
 \end{answer}
-
 \end{questions}
 
 
@@ -121,41 +121,53 @@ Assuming an average bacterial genome size of 4 Mbp, what depth of coverage do we
 
 There are two distinct reasons one may wish to trim or clip the raw reads.
 \begin{enumerate}
-\item Low quality bases typically occur toward the end of Illumina reads. The lower the quality score, the higher the chance that the base is incorrect. 
-This introduces false k-mers into the assembly process. A good assembler should handle these gracefully.
-\item Seqeuncing adaptors are artificial sequence that can occur at the end of reads that came from fragments of DNA that were shorter than desired. 
-They were not in the original genome and their presence in lots of reads will totally confuse the assembler.
+\item Low quality bases typically occur toward the end of Illumina reads.
+The lower the quality score, the higher the chance that the base is incorrect.
+This introduces false k-mers into the assembly process. A good assembler
+should handle these gracefully.
+\item Sequencing adaptors are artificial sequence that can occur at the end of
+reads that came from fragments of DNA that were shorter than desired.
+They were not in the original genome and their presence in lots of reads
+will totally confuse the assembler.
 \end{enumerate}
 
-Normally one would use \texttt{fastqc} or similar to determine whether quality trimming is warranted and for the presence of sequencing adaptors. 
-The data set in this exercise is 99\% free of adaptors and is good quality overall so we will skip those steps.
+Normally one would use \texttt{fastqc} or similar to determine whether
+quality trimming is warranted and for the presence of sequencing adaptors.
+The data set in this exercise is 99\% free of adaptors and is good quality
+overall so we will skip those steps.
 \begin{questions}
 How do you know which adaptor sequence to trim? \\
 \begin{answer}
-% Needs answer
+You either ask the sequencing provider or use a tool that tries all known adapters.
 \end{answer}
 How are are quality values in \texttt{FASTQ} files calculated? Can we trust them? \\
 \begin{answer}
-% Needs answer
+The are calculated using formulas calibrated to the physical measurements the
+sequencing instrument takes. In the case of Illumina sequencing, these measurements
+will include pixel light intensities from the images the camera/scanner takes
+of the flow cell.
 \end{answer}
 \end{questions}
 
 \subsection{Allocate yourself to a \texttt{K} value on the spreadsheet}
 
-An important parameter to most genome assemblers is \texttt{K} which is the k-mer size used to construct the \textit{de Bruijn} graph (pronounced \textit{de Brown}) .
+An important parameter to most genome assemblers is \texttt{K} which is the
+k-mer size used to construct the \textit{de Bruijn} graph (pronounced \textit{de Brown}) .
 
-Please go to this shared online spreadsheet\url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} and choose \textbf{a K value} and put your name next to it.
-
+Please go to this shared online spreadsheet\url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing}
+and choose \textbf{a K value} and put your name next to it.
 
 \section{Assemble the reads using Velvet}
-The \texttt{Velvet} software performs the assembly in two steps. The first \texttt{velveth} step hashes the reads. The second \texttt{velvetg} step builds, cleans and traverses the graph.
+The \texttt{Velvet} software performs the assembly in two steps. The first \texttt{velveth}
+step hashes the reads. The second \texttt{velvetg} step builds, cleans and traverses the graph.
 
 \begin{steps}
-Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated on the spreadsheet and assemble the reads.
+Choose an output folder \texttt{DIR} and use the \texttt{K} value you were allocated
+on the spreadsheet and assemble the reads.
 % need to specify DIR
 \begin{lstlisting}
 <<<<<<< HEAD
-velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz 
+velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz
 /usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
 =======
 velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to specify DIR
@@ -166,11 +178,11 @@ velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to
 Description of the arguments used in the command:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
   \item[DIR] = Directory name you chose to write the output to
-  \item[K] = K-mer value; it is an odd number
-  \item[-shortPaired] = The read types are short and paired end
+  \item[K] = K-mer value; it must be an odd number
+  \item[-shortPaired] = The read types are short and paired-end
   \item[-fastq.gz] = The format of the input files
   \item[-separate] = R1 and R2 reads are in separate files
-  \item[input file names] = input fastq file names
+  \item[input file names] = input FASTQ file names
 \end{description}
 
 
@@ -189,8 +201,6 @@ Description of the arguments used in the command:
   \item[-cov\_cutoff] = coverage cutoff is set to \texttt{auto}. To be determined by \texttt{velvet}
 \end{description}
 
-
-
 Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the values for the following assembly statistics and add them to the spreadsheet \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} from earlier:
 \begin{table}[H]
   \centering
@@ -201,10 +211,10 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
     \midrule
     \texttt{contigs.fa} & this is a FASTA file with your contigs \\
     \texttt{Log} & has most of the metrics in it that we recorded \\
-	\texttt{stats.txt} & TSV file of length and coverage of individual contigs \\ 
-	\texttt{Sequences} & A copy of the input FASTQ sequences in FASTA format \\ 
-	\texttt{Pregraph Roadmaps Graph2} & Interim assembly graph structure \\ 
-	\texttt{LastGraph} & Final graph structure \\
+	  \texttt{stats.txt} & TSV file of length and coverage of individual contigs \\
+	  \texttt{Sequences} & A copy of the input FASTQ sequences in FASTA format \\
+	  \texttt{Pregraph Roadmaps Graph2} & Interim assembly graph structure \\
+	  \texttt{LastGraph} & Final graph structure \\
     \bottomrule
     \end{tabular}
   \label{tab:velvet_out}
@@ -212,20 +222,24 @@ Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the value
 
 \begin{steps}
 
-Let's examine the \texttt{stats.txt} file and look at the \texttt{short1\_cov} column which is the k-mer coverage of each contig:
+Let's examine the \texttt{stats.txt} file and look at the \texttt{short1\_cov}
+column which is the k-mer coverage of each contig:
 \begin{lstlisting}
 cut -f6 dir/stats.txt | less
 \end{lstlisting}
+Press \texttt{SPACE} and \texttt{b} to scroll up and down, and press \texttt{q} to quote.
 \end{steps}
 
 \begin{questions}
 What do you notice about the k-mer coverages? \\
 \begin{answer}
-% Needs answer
+They all appear to have a similar value, but there are some that
+do not fit the pattern.
 \end{answer}
 What do the outliers correspond to? \\
 \begin{answer}
-% Needs answer
+Repetitive elements of the genome including gene duplications.
+Also replicons with differing copy numbers, like bacterial plasmids.
 \end{answer}
 \end{questions}
 
@@ -238,13 +252,19 @@ grep NN dir/contigs.fa
 \begin{questions}
 Why is there N letters in the assembly? \\
 \begin{answer}
-% Needs answer
+Paired-end reads come from each end of the same original fragment of DNA.
+The unsequenced gap in the middle is variable, and unknown. The assembler
+sometimes struggles to resolve these gaps. So it knows two sections of the
+genome are connected, but it doesn't quite know what is between them. So
+it pads them with its best guess of how many bases there are, and uses N
+to denote them as unknown.
 \end{answer}
 \end{questions}
 
 \section{Visualising the assembly graph using Bandage}
 
-The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGraph}. The \texttt{Bandage} software allows us to view and explore the assembly graph.
+The final graph that \texttt{Velvet} uses is stored in the file \texttt{LastGraph}.
+The \texttt{Bandage} software allows us to view and explore the assembly graph.
 \begin{steps}
 \begin{enumerate}
 \item Start \texttt{Bandage}.
@@ -263,23 +283,30 @@ Now get up out of your chair and walks around and look at all the different grap
 \begin{questions}
 How does \texttt{K} affect the graph? \\
 \begin{answer}
-% Needs answer
+Small K produces higher k-mer coverage but also more connectivity as smaller K
+is more ambiguous.
 \end{answer}
 What would the graph look like in an ideal situtation? \\
 \begin{answer}
-% Needs answer
+If the genome had M replicons, we would like to see only M sub-graphs.
+Each sub-graph would be linear or circular, depending on the form of
+the replicon in the original organism.
 \end{answer}
 Why didn't anyone achieve perfection? \\
 \begin{answer}
-% Needs answer
+Short reads are unable to disambiguate repeats longer than the read length
+(or read span). Most genomes have repeats beyond 500 bp.
 \end{answer}
 \end{questions}
 
-Here is another example \url{https://github.com/rrwick/Bandage/wiki/Effect-of-kmer-size} from the Bandage web site. % MORE DETAIL???
+Here is another example \url{https://github.com/rrwick/Bandage/wiki/Effect-of-kmer-size}
+from the Bandage web site on how K can affect assembly graphs.
 
 \subsection{Explore the graph}
 
-\texttt{Bandage} is designed to be an interactive tool. It allows you to see relationships between parts of your genome that are lost when you only look at the FASTA file of contigs.
+\texttt{Bandage} is designed to be an interactive tool. It allows you to see
+relationships between parts of your genome that are lost when you
+ only look at the FASTA file of contigs.
 \begin{itemize}
 \item Zoom in using the \texttt{Zoom} up/down button in the left hand panel
 \item Pan around by holding down the Option/Windows key and dragging on the background
@@ -288,7 +315,9 @@ Here is another example \url{https://github.com/rrwick/Bandage/wiki/Effect-of-km
 Feel free to play around a bit and ask questions.
 
 \subsection{Features of the assembly graph}
-The graph is quite tangled. The long stretches correspond to contigs. The intersections correspond to shared k-mers in the graph, which occur due to repeated sequences within the genome.
+The graph is quite tangled. The long stretches correspond to contigs.
+The intersections correspond to shared k-mers in the graph, which occur
+due to repeated sequences within the genome.
 \begin{steps}
 \item Select an node (rectangle) in the graph. It's length is reported in the right hand panel as \texttt{Length: NNN}.
 \item On the menu choose \texttt{Output -> Web BLAST selected node}. Your browser should open the
@@ -299,11 +328,13 @@ The graph is quite tangled. The long stretches correspond to contigs. The inters
 \begin{questions}
 Did your node match anything in the Genbank database? \\
 \begin{answer}
-%Answer
+You will need to examine the BLAST report on the trainee browser window.
 \end{answer}
 Can you determine what species of bacteria was sequenced? \\
 \begin{answer}
-%Answer
+The top hit of the small segment of DNA the trainee chose may not necessarily
+reflect the true species of bacteria. But if multiple segments produce consistent
+top hits to the same species you would have some confidence.
 \end{answer}
 \end{questions}
 
