@@ -166,12 +166,9 @@ Choose an output folder \texttt{DIR} and use the \texttt{K} value you were alloc
 on the spreadsheet and assemble the reads.
 % need to specify DIR
 \begin{lstlisting}
-<<<<<<< HEAD
-velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz
-/usr/bin/time –f "\%e" velvetg DIR -exp_cov auto –cov_cutoff auto
-=======
 velveth DIR K -shortPaired -fastq.gz -separate R1.fastq.gz R2.fastq.gz % need to specify DIR
->>>>>>> 90fb5168693bc9016b8bde037be8ab5d85eb3ff4
+
+/usr/bin/time -f "\%e" velvetg DIR -exp_cov auto -cov_cutoff auto
 \end{lstlisting}
 \end{steps}
 
@@ -268,11 +265,7 @@ The \texttt{Bandage} software allows us to view and explore the assembly graph.
 \begin{steps}
 \begin{enumerate}
 \item Start \texttt{Bandage}.
-<<<<<<< HEAD
-\item Go to \texttt{File - > Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
-=======
 \item Go to \texttt{File -> Load Graph} and load the \texttt{LastGraph} from your assembly in \texttt{DIR}. This may take a little while so be patient.
->>>>>>> 90fb5168693bc9016b8bde037be8ab5d85eb3ff4
 \item Maximize your window to fill up the whole screen.
 \item Click \texttt{Draw graph} on the left hand panel.
 \item Change \texttt{Random colours} to \texttt{Colour by read depth} on the left hand panel.
