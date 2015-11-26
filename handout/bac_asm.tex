@@ -181,7 +181,7 @@ Description of the arguments used in the command:
 \begin{steps}
 Run the velvetg step now:
 \begin{lstlisting}
-/usr/bin/time -f "\%e" velvetg DIR -exp_cov auto -cov_cutoff auto
+/usr/bin/time -f "%e" velvetg DIR -exp_cov auto -cov_cutoff auto
 \end{lstlisting}
 \end{steps}
 
@@ -193,7 +193,35 @@ Description of the arguments used in the command:
   \item[-cov\_cutoff] = coverage cutoff is set to \texttt{auto}. To be determined by \texttt{velvet}
 \end{description}
 
-Using the \texttt{dir/velvet.out} and \texttt{dir/Log} files determine the values for the following assembly statistics and add them to the spreadsheet \url{https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing} from earlier:
+\subsection{Add your results to the spreadsheet}
+
+
+\begin{table}[H]
+  \centering
+  \caption{Exploring the results}
+    \begin{tabular}{ll}
+    \toprule
+    \textbf{Column} & \textbf{Where to find the value} \\
+    \midrule
+    \texttt{K-mer size} & You chose this earlier and used it in the velveth command \\
+    \texttt{How long it took to run} & Look at the final output line for the user time in seconds: NN.N\\
+    \texttt{Average K-mer coverage } & Look for Estimated Coverage = NN.N\\
+    \texttt{Number of contigs} & Look for text Final graph has NNN nodes\\
+    \texttt{N50 contig size} & Look for n50 of NNNNN\\
+    \texttt{Largest contig size} & Look for max NNNNN\\
+    \texttt{Total number of basepairs (sum of contig lengths)} & Look for total NNNNNNN\\
+    \bottomrule
+
+
+\subsection{Effect of K on assembly}
+
+Examine the spreadsheet and look for patterns in the tabular data and corresponding bar/line charts.
+
+How does K affect each of the statistics?
+Which value of K do you think is doing the best job? Why?
+
+\subsection{Output Files}
+
 \begin{table}[H]
   \centering
   \caption{Output files}
