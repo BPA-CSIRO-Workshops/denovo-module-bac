@@ -64,7 +64,7 @@ velveth DIR K –shortPaired –fastq.gz –separate R1.fastq.gz R2.fastq.gz
 
 ### Add your results to the spreadsheet
 
-Using the dir/velvet.out and dir/Log files determine the values for the following assembly statistics and add them to the [spreadsheet](https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing) from earlier :
+Using the `DIR/Log` file determine the values for the following assembly statistics and add them to the [spreadsheet](https://docs.google.com/spreadsheets/d/1iFbCCihawpY1LClsAB-OJ66lyeW7EsdJyaMo1HCetF8/edit?usp=sharing) from earlier :
 
 Column | Where to find the value
 -------|------------------------
