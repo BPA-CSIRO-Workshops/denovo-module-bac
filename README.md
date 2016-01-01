@@ -16,8 +16,6 @@ Bioinformatics Training Platform (BTP) Module: Bacterial Genome Assembly
     * Understand that genome assembly produces a graph structure
   * Time Required
     * 3.5 hrs
-  * Compute Requirements
-    * 
 
 License
 =======
