@@ -15,7 +15,7 @@ Bioinformatics Training Platform (BTP) Module: Bacterial Genome Assembly
     * Be aware of the effects and trade-offs of the parameter \texttt{K} on the genome assembly
     * Understand that genome assembly produces a graph structure
   * Time Required
-    * 
+    * 3.5 hrs
   * Compute Requirements
     * 
 
